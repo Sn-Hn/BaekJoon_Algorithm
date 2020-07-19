@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class Add_case {
+public class Add_Case2 {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -21,7 +21,7 @@ public class Add_case {
 			int C = Integer.parseInt(st.nextToken());
 			int sum = B+C;
 			String Case = str + String.valueOf(i) +str1;
-			bw.write(Case + sum + "\n");
+			bw.write(Case + B + " + " + C + " = " + sum + "\n");
 		}
 		bw.flush();
 	}
