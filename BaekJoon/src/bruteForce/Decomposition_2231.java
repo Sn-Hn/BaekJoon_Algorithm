@@ -22,5 +22,34 @@ import java.util.Scanner;
 public class Decomposition_2231 {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
+		int n = scan.nextInt();
+		solve(n);
+	}
+	
+	private static void solve(int n) {
+		int constructor = 0;
+		boolean flag = false;
+		for(int i = 1; i <= n; i++) {
+			int num = i;
+			int sum = 0;
+			sum += num;
+			while(num >= 1) {
+				constructor = num % 10;
+				num /= 10;
+				sum += constructor;
+			}
+			if(sum == n) {
+				System.out.println(i);
+				flag = true;
+				break;
+			}else {
+				flag = false;
+			}
+		}
+		
+		if(!flag) {
+			System.out.println("0");
+		}
+		
 	}
 }
