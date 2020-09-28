@@ -27,9 +27,9 @@ public class PermutationCombination {
 //		rePermutation(arr, result1, 0, arr.size(), 2);
 		
 		/* 조합 */
-//		combination(arr, result, 0, arr.size(), 2);
+		combination(arr, result, 0, arr.size(), 2);
 		
-		reCombination(arr, result1, 0, arr.size(), 2, 0);
+//		reCombination(arr, result1, 0, arr.size(), 2, 0);
 		
 	}
 
@@ -51,9 +51,9 @@ public class PermutationCombination {
 
 		for (int i = 0; i < n; i++) {
 
-			result.add(arr.get(i));
+			result.add(arr.remove(i));
 			permutation(arr, result, n - 1, r - 1);			// r = 0이어서 reculsion이 돌지 않았으므로
-//			arr.add(i, result.remove(result.size() - 1));	// arr에 result에 넣었던 것을 뺴서 arr에 다시 넣는다.
+			arr.add(i, result.remove(result.size() - 1));	// arr에 result에 넣었던 것을 뺴서 arr에 다시 넣는다.
 		}
 	}
 	
