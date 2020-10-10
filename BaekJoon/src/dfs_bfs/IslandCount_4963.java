@@ -37,47 +37,57 @@ public class IslandCount_4963 {
 	private static int map[][];
 	private static int cnt;
 	
-	public static void dfs(int start) {
-		if(w == 0 || h == 0) {
-			System.out.println("0");
-		}
-		
-		for(int i = 0; i < w; i++) {
-			for(int j = 0; j < h; j++) {
-				if(map[i][j] == 1 && !visited[i][j]) {
-					visited[i][j] = true;
-					
+	
+	// 상하좌우 표현해야 함		    상     하    좌   우     ↖       ↘       ↙       ↗
+	private static int[] dx = {0,  0, -1, 1, -1, 1, -1,  1};
+	private static int[] dy = {-1, 1,  0, 0, -1, 1,  1, -1};
+	
+	public static int dfs(int x, int y) {
+		visited[x][y] = true;
+		for(int i = 0; i < dx.length; i++) {
+			int X = dx[i] + x;
+			int Y = dy[i] + y;
+			
+			if(X >= 0 && Y >= 0 && X < h && Y < w) {
+				if(map[X][Y] == 1 && !visited[X][Y]) {
+					dfs(X, Y);
 				}
 			}
 		}
 		
-		
+		return 1;
 	}
+	
 	
 	
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		
-		do {
+		while(true) {
 			cnt = 0;
 			w = scan.nextInt();
 			h = scan.nextInt();
 			
-			map = new int[w][h];
+			if(w == 0 && h == 0) break;
 			
-			for(int i = 0; i < w; i++) {
-				for(int j = 0; j < h; j++) {
+			map = new int[h][w];
+			visited = new boolean[h][w];
+			
+			for(int i = 0; i < h; i++) {
+				for(int j = 0; j < w; j++) {
 					map[i][j] = scan.nextInt();
 				}
 			}
-			dfs(1);
+			for(int i = 0; i < h; i++) {
+				for(int j = 0; j < w; j++) {
+					if(map[i][j] == 1 && !visited[i][j]) {
+						cnt += dfs(i, j);
+					}
+				}
+			}
+			System.out.println(cnt);
 			
-			
-		}while(w == 0 && h == 0);
-		
-		
-		
-		
+		}
 		
 	}
 }
