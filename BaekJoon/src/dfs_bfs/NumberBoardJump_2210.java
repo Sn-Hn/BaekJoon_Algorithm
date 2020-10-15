@@ -1,4 +1,4 @@
-package dynamicProgramming_DP;
+package dfs_bfs;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
