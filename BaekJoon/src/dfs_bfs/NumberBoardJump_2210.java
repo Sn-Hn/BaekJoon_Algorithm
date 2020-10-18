@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -42,42 +43,30 @@ import java.util.StringTokenizer;
 
 
 // 20/10/16 오전12:54 거의 맞는 것 같은데 무언가가 잘못 되었다... 내일 출근하면서 풀어보자
+// 20/10/18 중복을 제외하니까 Hash 쓰면 되네.. 생각도 못했다..
 // 출근하면서 다익스트라 강의 두번 보기.. 투 포인터도..
 public class NumberBoardJump_2210 {
 	private static int map[][] = new int[6][6];
-	private static int cnt;
-	private static String numStr;
-	private static List<String> numStrList = new ArrayList<>();
+	private static HashSet<String> list = new HashSet<>();
 	// 상 하 좌 우
 	private static int[] dx = {0, 0, -1, 1};
 	private static int[] dy = {-1, 1, 0, 0};
 	
-	public static void dfs(int x, int y) {
-		if(cnt == 4) {
-			boolean flag = false;
+	public static void dfs(int x, int y, int cnt, String numStr) {
+		if(cnt == 6) {
 			
-			if(numStrList.isEmpty()) numStrList.add(numStr);
-			for(String str : numStrList) {
-				if(str.equals(numStr)) {
-					flag = false;
-					break;
-				}else {
-					flag = true;
-				}
-			}
+			list.add(numStr);
 			
-			if(flag) numStrList.add(numStr);
 			return;
 		}
 		numStr += map[x][y];
-
 		for(int i = 0; i < 4; i++) {
 			int X = dx[i] + x;
 			int Y = dy[i] + y;
 			
 			if(X <= 5 && Y <= 5 && X > 0 && Y > 0) {
-				cnt++;
-				dfs(X, Y);
+				
+				dfs(X, Y, cnt+1, numStr);
 			}
 		}
 		
@@ -93,17 +82,15 @@ public class NumberBoardJump_2210 {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
+		String numStr = new String();
 		for(int i = 1; i <= 5; i++) {
 			for(int j = 1; j <= 5; j++) {
-				cnt = 0;
-				numStr = "";
-				dfs(i, j);
+				dfs(i, j, 0, numStr);
 				
 			}
 		}
 		
-		System.out.println(numStrList.size());
+		System.out.println(list.size());
 		
 		
 		br.close();
