@@ -190,9 +190,6 @@ public class RollDice_14499 {
 	private static int order[];
 	
 	// 이동 명령      order    :	     동   서   북   남
-//	private static int dx[] = {1, -1, 0, 0};
-//	private static int dy[] = {0, 0, -1, 1};
-	
 	private static int dx[] = {0, 0, -1, 1};
 	private static int dy[] = {1, -1, 0, 0};
 	
