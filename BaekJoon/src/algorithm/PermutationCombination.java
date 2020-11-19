@@ -17,6 +17,7 @@ public class PermutationCombination {
 		arr.add(3);
 		arr.add(4);
 		arr.add(5);
+		arr.add(6);
 		/* 순열 */
 		List<Integer> result = new ArrayList<>();
 //		permutation(arr, result, arr.size(), 2);
@@ -27,7 +28,7 @@ public class PermutationCombination {
 //		rePermutation(arr, result1, 0, arr.size(), 2);
 		
 		/* 조합 */
-		combination(arr, result, 0, arr.size(), 2);
+		combination(arr, result, 0, arr.size(), 4);
 		
 //		reCombination(arr, result1, 0, arr.size(), 2, 0);
 		
