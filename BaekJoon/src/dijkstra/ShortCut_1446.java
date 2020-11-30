@@ -43,6 +43,12 @@ N은 12 이하이고, D는 10,000보다 작거나 같은 자연수이다.
 
 */
 
+
+// 내가 풀었던 문제랑 달라서 좀 고민했지만
+// 똑같은 문제라고 생각하면 된다.
+// 0 - 50을 가는 버스가 비용 10을 낸다고 친다면
+// 0 - 1, 1 - 2 .... 48 - 49 까지의 비용은 49다
+// 따라서 최소 단위로 쪼갠 후 다익스트라 쓰면 된다.
 public class ShortCut_1446 {
 	private static final int INF = 1000000000;
 	// N : 지름길의 개수, D : 고속도로의 길이
@@ -81,6 +87,8 @@ public class ShortCut_1446 {
 		
 		for(int i = 0; i <= D; i++) {
 			list.add(new ArrayList<Node>());
+			// 최소 단위로 쪼개기 위한 로직
+			// 0 - 1, 1 - 2 ... 는 0에서 1까지 거리가 1이라는 뜻
 			list.get(i).add(new Node(i+1, 1));
 		}
 		
@@ -91,7 +99,8 @@ public class ShortCut_1446 {
 			int c = Integer.parseInt(st.nextToken());
 			
 			// 이것때문에 런타임에러남...
-			// 리얼 30분 헤맸다..
+			// 리얼 30분 헤맸다 
+			// a가 D보다 크면 넘어가면 된다
 			if(a > D) continue;
 			
 			list.get(a).add(new Node(b, c));
