@@ -3,6 +3,11 @@ package simulation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 /*
 
@@ -86,12 +91,122 @@ X는 10,000 이하의 양의 정수이며, 방향 전환 정보는 X가 증가�
 */
 
 public class Snake_3190 {
+	private static int N, appleCount, L;
+	private static int map[][];
+	private static int index = 0;
+	private static int count = 0;
+	private static List<Pair> turnList = new ArrayList<>();
+	private static Queue<Snake> snake = new LinkedList<>();
+	
+	// 0 : 오른쪽, 1 : 아래쪽, 2 : 왼쪽, 3 : 위쪽
+	private static int dx[] = {0, 1, 0, -1};
+	private static int dy[] = {1, 0, -1, 0};
+	
+	static class Snake {
+		int x, y;
+		
+		public Snake(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	static class Pair {
+		int x;
+		String turn;
+		
+		public Pair(int x, String turn) {
+			this.x = x;
+			this.turn = turn;
+		}
+	}
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		N = Integer.parseInt(br.readLine());
+		map = new int[N+1][N+1];
+		appleCount = Integer.parseInt(br.readLine());
 		
 		
+		// 빈 칸 : 0
+		// 뱀 : 3
+		for(int i = 0; i < appleCount; i++) {
+			st = new StringTokenizer(br.readLine());
+			int row = Integer.parseInt(st.nextToken());
+			int col = Integer.parseInt(st.nextToken());
+			
+			// 사과 : 2
+			map[row][col] = 2;
+		}
 		
+		L = Integer.parseInt(br.readLine());
+		for(int i = 0; i < L; i++) {
+			st = new StringTokenizer(br.readLine());
+			int time = Integer.parseInt(st.nextToken());
+			String t = st.nextToken();
+			
+			turnList.add(new Pair(time, t));
+		}
+		
+		turnList.add(new Pair(10001, "X"));
+		snake.add(new Snake(1, 1));
+		turn(1, 1);
+		
+//		System.out.println();
+//		for(int i = 0; i < N; i++) {
+//			for(int j = 0; j < N; j++) {
+//				System.out.print(map[i][j]);
+//			}
+//			System.out.println();
+//		}
+		
+		System.out.println(count);
 		
 		br.close();
+	}
+	
+	private static void turn(int x, int y) {
+		int time = 0;
+		for(Pair pair : turnList) {
+			for(int i = time; i < pair.x; i++) {
+				int X = x + dx[index];
+				int Y = y + dy[index];
+				count++;
+				
+				// 벽에 닿으면 안되기 떄문에
+				if(X > 0 && X <= N && Y > 0 && Y <= N) {
+					if(map[X][Y] == 0) {
+//						System.out.println("X : " + X + ", Y : " + Y);
+						snake.add(new Snake(X, Y));
+						Snake s = snake.poll();
+						map[X][Y] = 3;
+						map[s.x][s.y] = 0;
+						
+						x = X;
+						y = Y;
+					}else if(map[X][Y] == 2) {
+						map[X][Y] = 3;
+						snake.add(new Snake(X, Y));
+						
+						x = X;
+						y = Y;
+					}else {
+						return;
+					}
+				}else {
+					return;
+				}
+			}
+			if(pair.turn.equals("D")) {
+				index = (index+1)%4;
+			}else if(pair.turn.equals("L")) {
+				index = (index+3)%4;
+			}else {
+				return;
+			}
+			time = pair.x;
+		}
+		
 	}
 }
