@@ -168,6 +168,11 @@ https://www.acmicpc.net/problem/17144
 public class FineDust_17144 {
 	private static int R, C, T;
 	private static int map[][];
+	private static int copyMap[][];
+	
+	private static int dx[] = {1, -1, 0, 0};
+	private static int dy[] = {0, 0, 1, -1};
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -175,14 +180,139 @@ public class FineDust_17144 {
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		T = Integer.parseInt(st.nextToken());
+		map = new int[R][C];
+		copyMap = new int[R][C];
+		
 		
 		for(int i = 0; i < R; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < C; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
+				copyMap[i][j] = map[i][j];
 			}
 		}
 		
+		int index = 0;
+		while(index < T) {
+			// 1초 후
+			index++;
+			for(int i = 0; i < R; i++) {
+				for(int j = 0; j < C; j++) {
+					// 1번 조건
+					diffusion(i, j);
+				}
+			}
+			System.out.println();
+			
+			purify();
+			mapCopy();
+		}
+		
+		System.out.println(countFineDust());
+		
 		br.close();
 	}
+	
+	private static void diffusion(int x, int y) {
+		int index = 0;
+		for(int i = 0; i < 4; i++) {
+			int X = x + dx[i];
+			int Y = y + dy[i];
+			
+			if(X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] != -1) {
+				copyMap[X][Y] = copyMap[X][Y] + map[x][y]/5;
+				index++;
+			}
+		}
+		
+		copyMap[x][y] = copyMap[x][y] - ((map[x][y]/5) * index);
+	}
+	
+	private static void purify() {
+		int airPurifier = 0;
+		int index = 0;
+		for(int i = 0; i < R; i++) {
+			if(copyMap[i][0] == -1) {
+				airPurifier = i;
+				break;
+			}
+		}
+		
+		// 위쪽 공기청정기 순환
+		for(int i = airPurifier-1; i > 0; i--) {
+			copyMap[i][0] = copyMap[i-1][0];
+		}
+		
+		for(int i = 0; i < C-1; i++) {
+			copyMap[0][i] = copyMap[0][i+1];
+		}
+		
+		for(int i = 0; i < airPurifier; i++) {
+			copyMap[i][C-1] = copyMap[i+1][C-1];
+		}
+		
+		for(int i = C-1; i > 0; i--) {
+			if(copyMap[airPurifier][i-1] != -1) {
+				copyMap[airPurifier][i] = copyMap[airPurifier][i-1];				
+			}else {
+				copyMap[airPurifier][i] = 0;
+			}
+		}
+		
+		// 아래쪽 공기청정기 순환
+		airPurifier += 1;
+		
+		for(int i = airPurifier+1; i < R-1; i++) {
+			copyMap[i][0] = copyMap[i+1][0];
+		}
+		
+		for(int i = 0; i < C-1; i++) {
+			copyMap[R-1][i] = copyMap[R-1][i+1];
+		}
+		
+		for(int i = R-1; i > airPurifier; i--) {
+			copyMap[i][C-1] = copyMap[i-1][C-1];
+		}
+		
+		for(int i = C-1; i > 0; i--) {
+			if(copyMap[airPurifier][i-1] != -1) {
+				copyMap[airPurifier][i] = copyMap[airPurifier][i-1];				
+			}else {
+				copyMap[airPurifier][i] = 0;
+			}
+		}
+		
+	}
+	
+	private static void mapCopy() {
+		for(int i = 0; i < R; i++) {
+			for(int j = 0; j < C; j++) {
+				map[i][j] = copyMap[i][j];
+			}
+		}
+	}
+	
+	private static int countFineDust() {
+		int count = 0;
+		
+		for(int i = 0; i < R; i++) {
+			for(int j = 0; j < C; j++) {
+				if(map[i][j] != -1) {
+					count += map[i][j];
+				}
+			}
+		}
+		
+		return count;
+	}
+	
+//	private static void printMap() {
+//		for(int i = 0; i < R; i++) {
+//			for(int j = 0; j < C; j++) {
+//				System.out.print(copyMap[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
+//	}
+	
 }
