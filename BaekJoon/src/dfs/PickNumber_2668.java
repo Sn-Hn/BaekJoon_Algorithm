@@ -3,7 +3,12 @@ package dfs;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /*
 
@@ -49,22 +54,41 @@ import java.util.List;
 
 */
 
-// 왜틀렸지....??
-// 반례 3 3 1 2
+//반례
+//10
+//2
+//4
+//1
+//7
+//7
+//4
+//4
+//8
+//2
+//1
+
+// List형으로 중복을 제거하려다 보니 방문처리를 제대로 하지 못함
+// 테스트케이스와 다른 반례들은 통과하였는데 위 반례를 통과하지 못함
+// 보니 방문처리 실수
+// 방문처리를 제대로 하니 중복된 값이 들어갈 수 있어 Set으로 중복처리
+// 그 후 정렬을 위하여 List로 대체
 public class PickNumber_2668 {
 	private static int[] arr;
 	private static int[] ranArr;
 	private static int n;
 	private static boolean[] visited;
-	private static List<Integer> result;
+	private static Set<Integer> result;
 	private static List<Integer> compare;
 	
 	private static void dfs(int idx, int ran) {
+		// 정상 배열과 입력받은 배열의 같은 인덱스의 값이 같다면 무조건 포함
 		if(arr[idx] == ranArr[idx]) {
 			result.add(arr[idx]);
 			visited[idx] = true;
 			return;
 		}
+		
+		// 인덱스를 방문하지 않았다면
 		if(!visited[idx]) {
 			if(arr[idx] == ranArr[ran]) {
 				compare.add(arr[idx]);
@@ -77,7 +101,7 @@ public class PickNumber_2668 {
 				if(!compare.contains(ranArr[ran])) {
 					visited[ran] = true;
 					dfs(idx, ranArr[ran]);
-					
+				
 				}
 			}
 		}
@@ -87,11 +111,11 @@ public class PickNumber_2668 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		n = Integer.parseInt(br.readLine());
-		arr = new int[n+1];
-		ranArr = new int[n+1];
-		visited = new boolean[n+1];
-		result = new ArrayList<Integer>();
+		arr = new int[n+1];					// 정상 배열
+		ranArr = new int[n+1];				// 입력 배열
+		result = new HashSet<Integer>();	// 결과 값
 		
+		// 정상 배열과 입력받을 배열을 초기화
 		for(int i = 1; i <= n; i++) {
 			arr[i] = i;
 			ranArr[i] = Integer.parseInt(br.readLine());
@@ -99,18 +123,30 @@ public class PickNumber_2668 {
 		
 		for(int i = 1; i <= n; i++) {
 			compare = new ArrayList<Integer>();
+			visited = new boolean[n+1];			// 방문 처리
 			if(!visited[i]) {
 				dfs(i, ranArr[i]);				
 			}
 		}
 		
 		System.out.println(result.size());
-		result.sort(null);
 		
-		for(int i = 0; i < result.size(); i++) {
-			if(i != result.size()-1) System.out.println(result.get(i));
-			else System.out.print(result.get(i));
+		List<Integer> list = new ArrayList<>(result);
+		Collections.sort(list);
+		
+		// 정렬 처리를 하지 않아 오답처리
+//		Iterator<Integer> it = result.iterator();
+//		
+//		// hasNext() : 데이터가 있으면 true, 없으면 false
+//		while(it.hasNext()) {
+//			System.out.println(it.next());
+//		}
+		
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
 		}
+		
+		
 		
 		
 		br.close();

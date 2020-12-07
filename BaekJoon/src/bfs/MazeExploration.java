@@ -77,78 +77,77 @@ public class MazeExploration {
 	private static boolean[][] visited;
 	private static int depth = 0;
 	private static boolean flag = false;
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	private static class Pair {
 		int x, y, depth;
+
 		public Pair(int x, int y, int depth) {
 			this.x = x;
 			this.y = y;
 			this.depth = depth;
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new int[N][M];
 		visited = new boolean[N][M];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			String nextToken = br.readLine();
-			for(int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++) {
 				map[i][j] = Character.getNumericValue(nextToken.charAt(j));
 			}
 		}
-		if(map[0][0] == 1) {
-			bfs(0, 0, 1);			
-		}else {
+		if (map[0][0] == 1) {
+			bfs(0, 0, 1);
+		} else {
 			System.out.println(0);
 		}
-		
+
 		// 문제 푸는데 이상은 없지만
 		// 만약 길이 끊어져 있다면 예외로 생각해봄
-		if(!flag) {
+		if (!flag) {
 			System.out.println("가는길 없음");
 		}
-		
+
 		br.close();
 	}
-	
+
 	private static void bfs(int x, int y, int depth) {
 		Queue<Pair> q = new LinkedList<Pair>();
 		q.add(new Pair(x, y, depth));
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
 			visited[p.x][p.y] = true;
-			
-			for(int i = 0; i < 4; i++) {
+
+			for (int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
-				
-				if(X >= 0 && X < N && Y >= 0 && Y < M) {
-					if(map[X][Y] == 1 && !visited[X][Y]) {
+
+				if (X >= 0 && X < N && Y >= 0 && Y < M) {
+					if (map[X][Y] == 1 && !visited[X][Y]) {
 						visited[X][Y] = true;
-						q.add(new Pair(X, Y, p.depth+1));
+						q.add(new Pair(X, Y, p.depth + 1));
 					}
 				}
 			}
-			
-			if(p.x == N-1 && p.y == M-1) {
+
+			if (p.x == N - 1 && p.y == M - 1) {
 				flag = true;
 				System.out.println(p.depth);
-			}else {
+			} else {
 				flag = false;
 			}
 		}
-		
-		
-		
+
 	}
 }
