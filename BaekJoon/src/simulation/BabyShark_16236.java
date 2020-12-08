@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -70,10 +71,10 @@ N×N 크기의 공간에 물고기 M마리와 아기 상어 1마리가 있다.
 3
 예제 입력 3 
 4
-4 3 2 1
+0 0 2 1
 0 0 0 0
 0 0 9 0
-1 2 3 4
+1 2 0 0
 예제 출력 3 
 14
 예제 입력 4 
@@ -115,18 +116,65 @@ public class BabyShark_16236 {
 	private static int N;
 	private static int map[][];
 	private static Shark shark;
-	private static List<Shark> sharkList = new ArrayList<>();
+	private static Shark eatableFish = new Shark(0, 0, 0);
+	private static List<Shark> fishList = new ArrayList<Shark>();
+	private static boolean[][] visited;
+	private static boolean flag = true;
 	
 	private static int dx[] = {1, -1, 0, 0};
 	private static int dy[] = {0, 0, 1, -1};
 	
-	private static class Shark {
-		int x, y, size;
-		public Shark(int x, int y) {
+	private static class Shark implements Comparable<Shark> {
+		int x, y, depth;
+		int count = 0;
+		int size = 2;
+		
+		public Shark(int x, int y, int depth) {
 			this.x = x;
 			this.y = y;
-			size = 2;
+			this.depth = depth;
 		}
+		
+		public Shark(int x, int y, int depth, int size, int count) {
+			this.x = x;
+			this.y = y;
+			this.depth = depth;
+			this.size = size;
+			this.count = count;
+		}
+		
+		public void eatFish(int count) {
+			this.count = count;
+			if(count >= size) {
+				size += 1;
+				this.count = 0;
+			}
+		}
+		
+		@Override
+		public int compareTo(Shark o) {
+			// TODO Auto-generated method stub
+			// depth가 작은것부터 정렬 (오름차순) -> 최소 경로인 것들이 맨 앞으로
+			if(this.depth > o.depth) {
+				return 1;
+				
+			// depth가 같을 때
+			}else if(this.depth == o.depth) {
+				// x가 작은 것 부터 정렬 (오름차순) -> 위쪽에 있는 것들이 맨 앞으로
+				if(this.x > o.x) {
+					return 1;
+				// x가 같을 때
+				}else if(this.x == o.x) {
+					// y가 작은 것 부터 정렬 (오름차순) -> 왼쪽에 있는 것들이 맨 앞으로
+					if(this.y > o.y) {
+						return 1;
+					}
+				}				
+			}
+			return -1;
+		}
+		
+		
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -140,31 +188,97 @@ public class BabyShark_16236 {
 			for(int j = 0; j < N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 				if(map[i][j] == 9) {
-					shark = new Shark(i, j);
+					shark = new Shark(i, j, 0);
 				}
 			}
 		}
+		int result = 0;
+		while(flag) {
+			visited = new boolean[N][N];
+			result += bfs();
+		}
+		System.out.println(result);
 		
 		br.close();
 	}
 	
-	private static void bfs() {
+	private static int bfs() {
 		Queue<Shark> q = new LinkedList<>();
+		int depth = 0;
+		int count = 0;
 		q.add(shark);
 		
 		while(!q.isEmpty()) {
 			Shark s = q.poll();
+			visited[s.x][s.y] = true;
 			
 			for(int i = 0; i < 4; i++) {
 				int X = s.x + dx[i];
 				int Y = s.y + dy[i];
-				
 				if(X >= 0 && X < N && Y >= 0 && Y < N) {
-					q.add(new Shark(X, Y));
+					if((map[X][Y] == 0 || map[X][Y] == s.size) && !visited[X][Y]) {
+						depth = s.depth + 1;
+						visited[X][Y] = true;
+						q.add(new Shark(X, Y, depth, s.size, s.count));						
+					}else if((map[X][Y] >= 1 && map[X][Y] < s.size) && !visited[X][Y]) {
+						depth = s.depth + 1;
+						visited[X][Y] = true;
+						// 가장 가까운 물고기들
+						fishList.add(new Shark(X, Y, depth, s.size, s.count));
+					}
 					
 				}
 			}
 		}
 		
+		if(eatableFish()) {
+			map[shark.x][shark.y] = 0;
+			map[eatableFish.x][eatableFish.y] = 9;
+			shark.eatFish(shark.count+1);
+			shark = new Shark(eatableFish.x, eatableFish.y, 0, shark.size, shark.count);
+			depth = eatableFish.depth;
+			fishList.clear();
+			flag = true;
+		}else {
+			flag = false;
+			return 0;
+		}
+		
+		return depth;
+	}
+	
+	private static boolean eatableFish() {
+		if(fishList.size() == 0) {
+			return false;
+		}
+		
+		Collections.sort(fishList);
+		
+		// depth가 가장 작은 것들을 제외하고 전부 제거
+		// 먹이가 기준보다 아래쪽인것들 제거
+		// 먹이가 기준보다 오른쪽인것들 제거
+		eatableFish = fishList.get(0);
+		
+		return true;
+	}
+	
+	private static boolean isEat(Shark s) {
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				if(map[i][j] >= 1 && map[i][j] < s.size) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private static void printMap() {
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				System.out.print(map[i][j]);
+			}
+			System.out.println();
+		}
 	}
 }
