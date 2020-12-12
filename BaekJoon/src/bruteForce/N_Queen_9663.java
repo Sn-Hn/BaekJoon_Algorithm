@@ -1,46 +1,57 @@
 package bruteForce;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 /*	골드 5
 
+N-Queen 분류
+시간 제한	메모리 제한	제출	정답	맞은 사람	정답 비율
+10 초	128 MB	29734	16251	10665	54.388%
+문제
 N-Queen 문제는 크기가 N × N인 체스판 위에 퀸 N개를 서로 공격할 수 없게 놓는 문제이다.
 
 N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 작성하시오.
 
+입력
 첫째 줄에 N이 주어진다. (1 ≤ N < 15)
 
+출력
 첫째 줄에 퀸 N개를 서로 공격할 수 없게 놓는 경우의 수를 출력한다.
+
+예제 입력 1 
+8
+예제 출력 1 
+92
 
 */
 
 public class N_Queen_9663 {
-	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
-		int n = scan.nextInt();
-		int[][] arr = new int[n][n];
-		List<Integer> list = new ArrayList<Integer>();
-		int[] result = new int[n];
-		boolean flag = false;
+	private static int N;
+	private static int map[][];
+	private static int depth = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		for(int i = 1; i <= n; i++) {
-			list.add(i);
-		}
+		N = Integer.parseInt(br.readLine());
+		map = new int[N][N];
 		
-		permutation(list, result, 0, n, n);
+		
+		
+		
+		br.close();
 	}
+	
+	private static void queen() {
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				
 
-	private static void permutation(List<Integer> list, int[] result, int depth, int n, int r) {
-		if(depth == r) {
-			return;
-		}
-		
-		for(int i = 0; i < n-depth; i++) {
-			result[depth] = list.remove(i);
-			permutation(list, result, depth+1, n, r);
-			list.add(i, result[depth]);
+			}
 		}
 	}
 }

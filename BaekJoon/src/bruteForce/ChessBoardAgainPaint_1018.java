@@ -1,6 +1,10 @@
 package bruteForce;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /*
 
@@ -24,29 +28,75 @@ import java.util.Scanner;
 
 첫째 줄에 지민이가 다시 칠해야 하는 정사각형 개수의 최솟값을 출력한다.
 
+예제 입력 1 
+8 8
+WBWBWBWB
+BWBWBWBW
+WBWBWBWB
+BWBBBWBW
+WBWBWBWB
+BWBWBWBW
+WBWBWBWB
+BWBWBWBW
+예제 출력 1 
+1
+
 */
+
+// W : 1, B : 0
 public class ChessBoardAgainPaint_1018 {
-	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
-		int n = scan.nextInt();
-		int m = scan.nextInt();
-		int[][] arr = new int[n][m];
-		for(int i = 0; i < n; i++) {
-			for(int j = 0; j < m; j++) {
-				arr[i][j] = scan.nextInt();
+	private static int N, M;
+	private static boolean[][] map;
+	private static int min = 64;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		map = new boolean[N][M];
+		
+		for(int i = 0; i < N; i++ ) {
+			String str = br.readLine();
+			for(int j = 0; j < M; j++ ) {
+				if(str.charAt(j) == 'W') {
+					map[i][j] = true;
+				}else {
+					map[i][j] = false;
+				}
 			}
 		}
 		
+		for(int i = 0; i < N-7; i++) {
+			for(int j = 0; j < M-7; j++) {
+				paintBoard(i, j);
+			}
+		}
+		
+		System.out.println(min);
+		
+		br.close();
 	}
 	
-	private static void paint(int[][] arr) {
-		int[][] chessBoard = new int[8][8];
-		for(int i = 0; i < arr.length; i++) {
-			for(int j = 0; j <arr[i].length; j++) {
+	// 8개의 판을 모두 완전 탐색으로 찾아야 한다.
+	// 즉 0, 0 부터 시작하여 끝까지..
+	// flag가 true이면 처음이 W, false이면 처음이 B
+	private static void paintBoard(int x, int y) {
+		int count = 0;
+		boolean flag = map[x][y];
+		for(int i = x; i < x + 8; i++) {
+			for(int j = y; j < y + 8; j++) {
+				if(map[i][j] != flag) {
+					count++;
+				}
 				
+				flag = !flag;
 			}
+			flag = !flag;
 		}
 		
+		count = Math.min(count, 64 - count);
 		
+		min = Math.min(min, count);
 	}
 }

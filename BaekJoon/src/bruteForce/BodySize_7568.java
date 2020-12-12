@@ -65,8 +65,6 @@ public class BodySize_7568 {
 		
 		for(int i : ans) System.out.println(i+1);
 		
-		
-		
 	}
 	
 	
