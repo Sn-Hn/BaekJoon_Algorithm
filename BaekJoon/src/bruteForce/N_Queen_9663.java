@@ -30,28 +30,50 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 
 
 */
 
+// 출처 : https://st-lab.tistory.com/118
 public class N_Queen_9663 {
 	private static int N;
-	private static int map[][];
-	private static int depth = 0;
+	private static int[] arr;
+	private static boolean visited[];
+	private static int count = 0;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		N = Integer.parseInt(br.readLine());
-		map = new int[N][N];
+		// 행
+		arr = new int[N];
+		visited = new boolean[N];
 		
+		queen(0);
 		
-		
+		System.out.println(count);
 		
 		br.close();
 	}
 	
-	private static void queen() {
+	private static void queen(int depth) {
+		if(depth == N) {
+			count++;
+			return;
+		}
+		
 		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				
-
+			// arr[] = 행 번호
+			arr[depth] = i;
+			if(possibility(depth)) {
+				queen(depth+1);
 			}
 		}
+	}
+	
+	private static boolean possibility(int col) {
+		for(int i = 0; i < col; i++) {
+			if(arr[col] == arr[i]) {
+				return false;
+			}else if(Math.abs(col - i) == Math.abs(arr[col] - arr[i])) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
