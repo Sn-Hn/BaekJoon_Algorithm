@@ -132,6 +132,5 @@ public class GetMinimumCost_1916 {
 			
 		}
 		
-		
 	}
 }
