@@ -51,7 +51,7 @@ import java.util.StringTokenizer;
 */
 
 // dfs로 풀었는데 시간초과
-public class Robot_1726 {
+public class Robot_1726_dfs_실패 {
 	private static int N, M;
 	private static int map[][];
 	private static boolean visited[][];
