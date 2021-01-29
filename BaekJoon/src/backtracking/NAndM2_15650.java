@@ -69,7 +69,7 @@ public class NAndM2_15650 {
 	}
 	
 	private static void dfs(int index, int depth) {
-		if(depth == M) {
+		if(depth == 4) {
 			for(int i : arr) {
 				sb.append(i + " ");
 			}
@@ -77,10 +77,10 @@ public class NAndM2_15650 {
 			return;
 		}
 		
-		for(int i = index; i < N; i++) {
+		for(int i = index; i < 8; i++) {
 			if(!visited[i]) {
 				visited[i] = true;
-				arr[depth] = i+1;
+				arr[depth] = i + 1;
 				dfs(i + 1, depth+1);
 				visited[i] = false;
 			}
