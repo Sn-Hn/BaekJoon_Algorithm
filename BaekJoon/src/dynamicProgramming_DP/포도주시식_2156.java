@@ -70,7 +70,4 @@ public class 포도주시식_2156 {
 		br.close();
 	}
 	
-//	private static int dp() {
-//		
-//	}
 }
