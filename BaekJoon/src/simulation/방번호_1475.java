@@ -34,7 +34,7 @@ public class 방번호_1475 {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
+		int result = N;
 		int num = 0;
 		
 		while(N > 0) {
@@ -47,23 +47,20 @@ public class 방번호_1475 {
 			arr[num]++;
 		}
 		
-		int result = 0;
 		int max = -1;
 		for(int i = 0; i < 10; i++) {
-			if(max < arr[i]) {
-				max = arr[i];
-				result = i;
-			}
-		}
-		if(result == 6) {
-			if(max % 2 == 0) {
-				max /= 2;				
+			if(i != 6) {
+				if(max <= arr[i]) {
+					max = arr[i];
+				}				
 			}else {
-				max = max/2 + 1;
+				if(max <= arr[i]/2 + arr[i]%2) {
+					max = arr[i]/2 + arr[i]%2;
+				}
 			}
 		}
 		
-//		if(N == 0) max = 1;
+		if(result == 0) max = 1;
 		
 		System.out.println(max);
 		
