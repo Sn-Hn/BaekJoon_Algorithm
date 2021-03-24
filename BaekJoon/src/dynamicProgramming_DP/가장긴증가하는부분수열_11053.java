@@ -49,7 +49,7 @@ public class 가장긴증가하는부분수열_11053 {
 
         for(int i = 2; i <= N; i++) {
         	dp[i] = 1;
-        	for(int j = 1; j <= N; j++) {
+        	for(int j = 1; j <= i; j++) {
         		if(arr[i] > arr[j] && dp[i] <= dp[j]) {
         			dp[i] = dp[j] + 1;
         		}
