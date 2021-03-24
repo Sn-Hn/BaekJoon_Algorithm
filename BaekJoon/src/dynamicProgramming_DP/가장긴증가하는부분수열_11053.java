@@ -56,7 +56,10 @@ public class 가장긴증가하는부분수열_11053 {
         	}
         }
         
-        for(int i : dp) System.out.print(i + " ");
+        int max = 0;
+        for(int i : dp) max = Math.max(max, i);
+        
+        System.out.println(max);
         
         br.close();
     }
