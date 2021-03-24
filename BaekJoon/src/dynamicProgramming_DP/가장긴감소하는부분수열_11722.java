@@ -56,7 +56,6 @@ public class 가장긴감소하는부분수열_11722 {
 		int max = 0;
 		for(int i : dp) max = Math.max(max, i);
 		
-		System.out.println(max);
 		
 		br.close();
 	}
