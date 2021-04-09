@@ -79,7 +79,7 @@ public class 오르막수_11057 {
 //			}
 //		}
 		
-		System.out.println(result);
+		System.out.println(result%mod);
 
 		print();
 		
