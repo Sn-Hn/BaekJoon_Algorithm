@@ -40,16 +40,58 @@ import java.io.InputStreamReader;
 public class 오르막수_11057 {
 	private static int N;
 	private static int dp[][];
+	private static int mod = 10007;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		dp = new int[N][10];
+		dp = new int[N+1][10];
+		// N = 1은 0 ~ 9
+		int result = 0;
 		
-		for(int i = 1; i < 10; i++) {
+		for(int i = 0; i < 10; i++) {
 			dp[1][i] = 1;
-		}		
+		}
 		
+		for(int i = 2; i <= N; i++) {
+			for(int j = 0; j < 10; j++) {
+				for(int k = j; k < 10; k++) {
+					dp[i][k] += dp[i-1][j];
+					dp[i][k] %= mod;
+				}
+			}
+		}
+		
+		for(int i = 0; i < 10; i++) {
+			result += dp[N][i];
+		}
+		
+//		for(int i = 3; i <= N; i++) {
+//			dp[i][1] = sum;
+//			for(int j = 2; j < 10; j++) {
+//				dp[i][j] = dp[i][j-1] - dp[i-1][j-1];
+//				dp[i][j] %= mod;
+//				sum += dp[i][j];
+//			}
+//		}
+//		for(int i = 1; i <= N; i++) {
+//			for(int j = 1; j < 10; j++) {
+//				result += dp[i][j]%mod;				
+//			}
+//		}
+		
+		System.out.println(result);
+
+		print();
 		
 		br.close();
+	}
+	
+	private static void print() {
+		for(int i = 1; i <= N; i++) {
+			for(int j = 1; j < 10; j++) {
+				System.out.print(dp[i][j] + " ");
+			}
+			System.out.println();
+		}
 	}
 }
