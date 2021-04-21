@@ -75,7 +75,7 @@ public class 오르막수_11057 {
 //		}
 //		for(int i = 1; i <= N; i++) {
 //			for(int j = 1; j < 10; j++) {
-//				result += dp[i][j]%mod;				
+//				result += dp[i][j]%mod;	
 //			}
 //		}
 		
