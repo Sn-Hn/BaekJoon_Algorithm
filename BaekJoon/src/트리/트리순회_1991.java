@@ -97,18 +97,21 @@ public class 트리순회_1991 {
 			}
 		}
 		
+		// 전위 순회 : 부모 -> 왼쪽 자식 -> 오른쪽 자식
 		public void preOrder(Node root) {
 			System.out.print(root.data);
 			if(root.left != null) preOrder(root.left);
 			if(root.right != null) preOrder(root.right);
 		}
 		
+		// 중위 순회 : 왼쪽 자식 -> 부모 -> 오른쪽 자식
 		public void inOrder(Node root) {
 			if(root.left != null) inOrder(root.left);
 			System.out.print(root.data);
 			if(root.right != null) inOrder(root.right);
 		}
 		
+		// 후위 순회 : 왼쪽 자식 -> 오른쪽 자식 -> 부모
 		public void postOrder(Node root) {
 			if(root.left != null) postOrder(root.left);
 			if(root.right != null) postOrder(root.right);
