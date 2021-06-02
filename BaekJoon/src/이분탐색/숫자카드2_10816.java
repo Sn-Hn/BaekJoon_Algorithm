@@ -56,32 +56,20 @@ public class 숫자카드2_10816 {
         M = Integer.parseInt(br.readLine());
         result = new int[M];
         st = new StringTokenizer(br.readLine());
+        System.out.println(Arrays.toString(arr));
+        System.out.println("up low");
         for(int i = 0; i < M; i++) {
             int search = Integer.parseInt(st.nextToken());
             int up = upper(search);
             int low = lower(search);
+            
+            System.out.println(up + " , " + low);
 
-            sb.append(low - up + 1 + " ");
+            sb.append(up - low + 1 + " ");
         }
         System.out.println(sb.toString());
 
         br.close();
-    }
-
-    private static int upper(int search) {
-        int start = 0;
-        int end = N-1;
-
-        while(start <= end) {
-            int mid = (start + end) / 2;
-            if(arr[mid] >= search) {
-                end = mid - 1;
-            }else {
-                start = mid + 1;
-            }
-        }
-
-        return start;
     }
 
     private static int lower(int search) {
@@ -90,10 +78,26 @@ public class 숫자카드2_10816 {
 
         while(start <= end) {
             int mid = (start + end) / 2;
-            if(arr[mid] > search) {
-                end = mid - 1;
+            if(search > arr[mid]) {
+            	start = mid + 1;
             }else {
-                start = mid + 1;
+                end = mid - 1;
+            }
+        }
+
+        return start;
+    }
+
+    private static int upper(int search) {
+        int start = 0;
+        int end = N-1;
+
+        while(start <= end) {
+            int mid = (start + end) / 2;
+            if(search >= arr[mid]) {
+            	start = mid + 1;
+            }else {
+                end = mid - 1;
             }
         }
 
