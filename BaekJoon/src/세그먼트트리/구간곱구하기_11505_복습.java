@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class 구간합구하기_2042_복습 {
+public class 구간곱구하기_11505_복습 {
 	private static int N;
 	private static int M;
 	private static int K;
 	private static int[] arr;
 	private static long[] tree;
+	
+	private static final long MOD = 1000000007;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,13 +23,13 @@ public class 구간합구하기_2042_복습 {
 		arr = new int[N + 1];
 		tree = new long[N * 4];
 		
-		for (int i = 1; i <= N; i++) {
+		for(int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(br.readLine());
 		}
 		
 		initSegmentTree(1, N, 1);
 		StringBuilder sb = new StringBuilder();
-		for (int i = 1; i <= M + K; i++) {
+		for(int i = 0; i < M + K; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
@@ -36,7 +38,7 @@ public class 구간합구하기_2042_복습 {
 			if (a == 1) {
 				update(1, N, 1, b, c);
 			}else {
-				sb.append(sum(1, N, 1, b, c)).append("\n");
+				sb.append(mul(1, N, 1, b, c) % MOD).append("\n");
 			}
 		}
 		
@@ -52,12 +54,12 @@ public class 구간합구하기_2042_복습 {
 		
 		int mid = (start + end) / 2;
 		
-		return tree[node] = initSegmentTree(start, mid, node * 2) + initSegmentTree(mid + 1, end, node * 2 + 1);
+		return tree[node] = (initSegmentTree(start, mid, node * 2) * initSegmentTree(mid + 1, end, node * 2 + 1)) % MOD;
 	}
 	
-	private static long sum(int start, int end, int node, int left, long right) {
+	private static long mul(int start, int end, int node, int left, long right) {
 		if (left > end || right < start) {
-			return 0;
+			return 1;
 		}
 		
 		if (left <= start && right >= end) {
@@ -66,11 +68,11 @@ public class 구간합구하기_2042_복습 {
 		
 		int mid = (start + end) / 2;
 		
-		return sum(start, mid, node * 2, left, right) + sum(mid + 1, end, node * 2 + 1, left, right);
+		return (mul(start, mid, node * 2, left, right) * mul(mid + 1, end, node * 2 + 1, left, right)) % MOD;
 	}
 	
 	private static long update(int start, int end, int node, int index, long value) {
-		if (start > index || end < index) {
+		if (index < start || index > end) {
 			return tree[node];
 		}
 		
@@ -80,7 +82,6 @@ public class 구간합구하기_2042_복습 {
 		
 		int mid = (start + end) / 2;
 		
-		return tree[node] = update(start, mid, node * 2, index, value) + update(mid + 1, end, node * 2 + 1, index, value);
+		return tree[node] = (update(start, mid, node * 2, index, value) * update(mid + 1, end, node * 2 + 1, index, value)) % MOD;
 	}
-	
 }
