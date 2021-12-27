@@ -64,7 +64,7 @@ public class 결혼식_5567 {
 	
 	private static int N;
 	private static int M;
-	private static List<Integer>[] friendsTree;
+	private static Set<Integer>[] friendsTree;
 	private static Set<Integer> results = new HashSet<>();
 	
 	private static void inviteWedding(int depth, int numberClass) {
@@ -72,15 +72,15 @@ public class 결혼식_5567 {
 			return;
 		}
 		
-		for (int i = 0; i < friendsTree[numberClass].size(); i++) {
-			results.add(friendsTree[numberClass].get(i));
-			inviteWedding(depth + 1, friendsTree[numberClass].get(i));
+		for	(int friend : friendsTree[numberClass]) {
+			results.add(friend);
+			inviteWedding(depth + 1, friend);
 		}
 	}
 	
 	private static void init() {
 		for (int i = 0; i <= N; i++) {
-			friendsTree[i] = new ArrayList<>();
+			friendsTree[i] = new HashSet<>();
 		}
 	}
 	
@@ -88,7 +88,7 @@ public class 결혼식_5567 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		M = Integer.parseInt(br.readLine());
-		friendsTree = new List[N + 1];
+		friendsTree = new Set[N + 1];
 		init();
 		
 		StringTokenizer st;
@@ -108,7 +108,6 @@ public class 결혼식_5567 {
 		inviteWedding(0, 1);
 		
 		System.out.println(results.size());
-
 		
 		br.close();
 	}
