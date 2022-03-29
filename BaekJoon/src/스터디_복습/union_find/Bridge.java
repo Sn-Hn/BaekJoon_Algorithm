@@ -1,4 +1,4 @@
-package 스터디_복습;
+package 스터디_복습.union_find;
 
 import java.io.BufferedReader;
 import java.io.IOException;
